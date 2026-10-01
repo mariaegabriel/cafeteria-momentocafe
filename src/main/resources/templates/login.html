@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Momento Café</title>
+    <meta name="description" content="Entre na sua conta do Momento Café para acompanhar pedidos e pontos.">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Jost:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../">
+    <link rel="stylesheet" href="../">
+</head>
+
+<body class="login-page">
+    <!-- Header -->
+    <header class="header">
+        <nav class="container header-nav">
+            <div class="logo-section">
+                <img src="logo.png" alt="Logo Momento Café" class="logo-img">
+                <h1 class="logo-text">Momento Café</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="cardapio.html" class="nav-link">Cardápio</a></li>
+                <li><a href="pedidos.html" class="nav-link">Pedidos</a></li>
+                <li><a href="login.html" class="nav-link active">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Login Section -->
+    <section class="login-container">
+        <div class="login-box">
+            <img src="logo.png" alt="Momento Café" class="login-logo">
+
+            <h1 id="loginTitle">Bem-vindo de volta</h1>
+            <p id="loginSubtitle" class="login-subtitle">Acesse sua conta e acompanhe seus pedidos e pontos no clube</p>
+
+            <form id="loginForm" class="login-form">
+                <div id="nomeField" class="form-group" style="display: none;">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" placeholder="Seu nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="Mínimo 6 caracteres" required minlength="6">
+                </div>
+
+                <div id="confirmaSenhaField" class="form-group" style="display: none;">
+                    <label for="confirmaSenha">Confirme a Senha</label>
+                    <input type="password" id="confirmaSenha" placeholder="Confirme sua senha" required minlength="6">
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn btn-primary btn-full">Entrar</button>
+
+                <div id="mensagem" class="mensagem" style="display: none;"></div>
+
+                <div class="login-divider">ou</div>
+
+                <button type="button" id="toggleModo" class="btn-toggle">Ainda não tem conta? Cadastre-se aqui</button>
+            </form>
+
+            <div class="login-info">
+                <p><strong>💡 Benefícios da sua conta:</strong></p>
+                <ul>
+                    <li>📊 Acompanhe seus pedidos em tempo real</li>
+                    <li>🎁 Acumule pontos a cada compra</li>
+                    <li>🏆 Desbloqueie recompensas exclusivas</li>
+                    <li>⚡ Pedidos mais rápidos com dados salvos</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Momento Café</h4>
+                    <p>Mais que café, é um momento de paz e qualidade</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Localização</h4>
+                    <p>Rua das Oliveiras, 120 — Centro<br>
+                        Aberto seg-dom, 7h - 20h</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <p>(11) 3456-7890<br>
+                        contato@momentocafe.com.br</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Momento Café. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/login.js"></script>
+</body>
+
+</html>
