@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../static/img/logo_transparente.png">
+  <title>Momento Café | Administrativo</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../static/css/admin.css">
+</head>
+
+<body class="admin-page">
+  <script>
+    const tipoUsuario = localStorage.getItem("tipoUsuario");
+
+    if (tipoUsuario !== "gerente") {
+      window.location.href = "login.html";
+    }
+  </script>
+  <!-- ================= NAVBAR ================= -->
+
+  <nav class="navbar navbar-expand-lg fixed-top navbar-cafe">
+    <div class="container-fluid px-4">
+
+      <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html">
+        <img src="../static/img/logo_transparente.png" alt="Logo Momento Café" class="logo-marca">
+        Momento Café
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+
+          <li class="nav-item">
+            <a class="nav-link" href="../index.html">Ver site</a>
+          </li>
+
+          <li class="nav-item">
+            <span class="nav-link usuario-admin">
+              <i class="bi bi-person-badge-fill"></i>
+              Gerente
+            </span>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="login.html">
+              <i class="bi bi-box-arrow-right"></i>
+              Sair
+            </a>
+          </li>
+
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- ================= PAINEL ADMINISTRATIVO ================= -->
+
+  <div class="admin-wrapper">
+
+    <!-- Controles das abas (somente CSS) -->
+    <input type="radio" name="aba-admin" id="aba-atendimento" class="aba-input" checked>
+    <input type="radio" name="aba-admin" id="aba-finalizados" class="aba-input">
+
+
+    <!-- ================= MENU LATERAL ================= -->
+
+    <aside class="admin-sidebar">
+
+      <span class="sidebar-titulo">Pedidos</span>
+
+      <nav class="admin-menu">
+
+        <label for="aba-atendimento" class="menu-item menu-atendimento">
+          <i class="bi bi-hourglass-split"></i>
+          Em atendimento
+          <span class="menu-contador">4</span>
+        </label>
+
+        <label for="aba-finalizados" class="menu-item menu-finalizados">
+          <i class="bi bi-check2-circle"></i>
+          Finalizados
+          <span class="menu-contador">5</span>
+        </label>
+
+      </nav>
+
+      <div class="sidebar-rodape">
+        <i class="bi bi-shield-lock-fill"></i>
+        Área restrita aos gerentes
+      </div>
+
+    </aside>
+
+
+    <!-- ================= CONTEÚDO ================= -->
+
+    <main class="admin-conteudo">
+
+      <!-- RESUMO -->
+
+      <div class="row g-4 mb-4">
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="resumo-card">
+            <div class="resumo-icon"><i class="bi bi-receipt"></i></div>
+            <div>
+              <span>Pedidos hoje</span>
+              <h3>9</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="resumo-card">
+            <div class="resumo-icon"><i class="bi bi-hourglass-split"></i></div>
+            <div>
+              <span>Em atendimento</span>
+              <h3>4</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="resumo-card">
+            <div class="resumo-icon"><i class="bi bi-check2-circle"></i></div>
+            <div>
+              <span>Finalizados</span>
+              <h3>5</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="resumo-card">
+            <div class="resumo-icon"><i class="bi bi-cash-coin"></i></div>
+            <div>
+              <span>Faturamento</span>
+              <h3>R$ 287,50</h3>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ================= ABA: EM ATENDIMENTO ================= -->
+
+      <section class="painel painel-atendimento">
+
+        <div class="painel-header">
+          <div>
+            <span class="section-title">Administração</span>
+            <h2>Pedidos <span>em atendimento</span></h2>
+          </div>
+
+          <div class="input-busca">
+            <i class="bi bi-search"></i>
+            <input type="text" class="form-control" placeholder="Buscar pedido ou cliente">
+          </div>
+        </div>
+
+
+        <div class="row g-4">
+
+          <!-- PEDIDO 1 -->
+
+          <div class="col-md-6 col-xxl-4">
+            <div class="pedido-card">
+
+              <div class="pedido-topo">
+                <h4>Pedido #1024</h4>
+                <span class="status status-novo">
+                  <i class="bi bi-bell-fill"></i>
+                  Novo
+                </span>
+              </div>
+
+              <div class="pedido-cliente">
+                <i class="bi bi-person-fill"></i>
+                Ana Souza
+                <span class="pedido-hora"><i class="bi bi-clock"></i> 14:32</span>
+              </div>
+
+              <ul class="pedido-itens">
+                <li><span>2x Cappuccino</span> <span>R$ 24,00</span></li>
+                <li><span>1x Pão de queijo</span> <span>R$ 8,50</span></li>
+              </ul>
+
+              <div class="pedido-info">
+                <span><i class="bi bi-geo-alt-fill"></i> Mesa 05</span>
+                <strong>R$ 32,50</strong>
+              </div>
+
+              <div class="pedido-acoes">
+                <button type="button" class="btn btn-cafe btn-sm">
+                  <i class="bi bi-play-fill"></i>
+                  Iniciar preparo
+                </button>
+                <button type="button" class="btn btn-outline-cafe btn-sm">
+                  <i class="bi bi-x-lg"></i>
+                  Cancelar
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- PEDIDO 2 -->
+
+          <div class="col-md-6 col-xxl-4">
+            <div class="pedido-card">
+
+              <div class="pedido-topo">
+                <h4>Pedido #1023</h4>
+                <span class="status status-preparo">
+                  <i class="bi bi-fire"></i>
+                  Em preparo
+                </span>
+              </div>
+
+              <div class="pedido-cliente">
+                <i class="bi bi-person-fill"></i>
+                Carlos Lima
+                <span class="pedido-hora"><i class="bi bi-clock"></i> 14:25</span>
+              </div>
+
+              <ul class="pedido-itens">
+                <li><span>1x Espresso duplo</span> <span>R$ 9,00</span></li>
+                <li><span>1x Croissant</span> <span>R$ 12,00</span></li>
+                <li><span>1x Bolo de cenoura</span> <span>R$ 10,00</span></li>
+              </ul>
+
+              <div class="pedido-info">
+                <span><i class="bi bi-bag-fill"></i> Para viagem</span>
+                <strong>R$ 31,00</strong>
+              </div>
+
+              <div class="pedido-acoes">
+                <button type="button" class="btn btn-cafe btn-sm">
+                  <i class="bi bi-check-lg"></i>
+                  Marcar como pronto
+                </button>
+                <button type="button" class="btn btn-outline-cafe btn-sm">
+                  <i class="bi bi-x-lg"></i>
+                  Cancelar
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- PEDIDO 3 -->
+
+          <div class="col-md-6 col-xxl-4">
+            <div class="pedido-card">
+
+              <div class="pedido-topo">
+                <h4>Pedido #1022</h4>
+                <span class="status status-pronto">
+                  <i class="bi bi-cup-hot-fill"></i>
+                  Pronto
+                </span>
+              </div>
+
+              <div class="pedido-cliente">
+                <i class="bi bi-person-fill"></i>
+                Juliana Alves
+                <span class="pedido-hora"><i class="bi bi-clock"></i> 14:10</span>
+              </div>
+
+              <ul class="pedido-itens">
+                <li><span>1x Latte gelado</span> <span>R$ 15,00</span></li>
+                <li><span>1x Cookie</span> <span>R$ 7,00</span></li>
+              </ul>
+
+              <div class="pedido-info">
+                <span><i class="bi bi-geo-alt-fill"></i> Mesa 12</span>
+                <strong>R$ 22,00</strong>
+              </div>
+
+              <div class="pedido-acoes">
+                <button type="button" class="btn btn-cafe btn-sm">
+                  <i class="bi bi-check2-all"></i>
+                  Finalizar
+                </button>
+                <button type="button" class="btn btn-outline-cafe btn-sm">
+                  <i class="bi bi-x-lg"></i>
+                  Cancelar
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- PEDIDO 4 -->
+
+          <div class="col-md-6 col-xxl-4">
+            <div class="pedido-card">
+
+              <div class="pedido-topo">
+                <h4>Pedido #1021</h4>
+                <span class="status status-preparo">
+                  <i class="bi bi-fire"></i>
+                  Em preparo
+                </span>
+              </div>
+
+              <div class="pedido-cliente">
+                <i class="bi bi-person-fill"></i>
+                Pedro Martins
+                <span class="pedido-hora"><i class="bi bi-clock"></i> 14:02</span>
+              </div>
+
+              <ul class="pedido-itens">
+                <li><span>3x Mocha</span> <span>R$ 42,00</span></li>
+              </ul>
+
+              <div class="pedido-observacao">
+                <i class="bi bi-chat-left-text-fill"></i>
+                Um sem açúcar, por favor.
+              </div>
+
+              <div class="pedido-info">
+                <span><i class="bi bi-geo-alt-fill"></i> Varanda - Mesa 03</span>
+                <strong>R$ 42,00</strong>
+              </div>
+
+              <div class="pedido-acoes">
+                <button type="button" class="btn btn-cafe btn-sm">
+                  <i class="bi bi-check-lg"></i>
+                  Marcar como pronto
+                </button>
+                <button type="button" class="btn btn-outline-cafe btn-sm">
+                  <i class="bi bi-x-lg"></i>
+                  Cancelar
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================= ABA: FINALIZADOS ================= -->
+
+      <section class="painel painel-finalizados">
+
+        <div class="painel-header">
+          <div>
+            <span class="section-title">Administração</span>
+            <h2>Pedidos <span>finalizados</span></h2>
+          </div>
+
+          <div class="input-busca">
+            <i class="bi bi-search"></i>
+            <input type="text" class="form-control" placeholder="Buscar pedido ou cliente">
+          </div>
+        </div>
+
+
+        <div class="tabela-card">
+
+          <div class="table-responsive">
+
+            <table class="table tabela-cafe align-middle mb-0">
+
+              <thead>
+                <tr>
+                  <th>Pedido</th>
+                  <th>Cliente</th>
+                  <th>Itens</th>
+                  <th>Local</th>
+                  <th>Horário</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td><strong>#1020</strong></td>
+                  <td>Mariana Costa</td>
+                  <td>2x Latte, 1x Brownie</td>
+                  <td>Mesa 08</td>
+                  <td>13:48</td>
+                  <td><strong>R$ 41,00</strong></td>
+                  <td><span class="status status-finalizado"><i class="bi bi-check2-all"></i> Entregue</span></td>
+                </tr>
+                <tr>
+                  <td><strong>#1019</strong></td>
+                  <td>Rafael Gomes</td>
+                  <td>1x Espresso</td>
+                  <td>Para viagem</td>
+                  <td>13:30</td>
+                  <td><strong>R$ 6,00</strong></td>
+                  <td><span class="status status-finalizado"><i class="bi bi-check2-all"></i> Entregue</span></td>
+                </tr>
+                <tr>
+                  <td><strong>#1018</strong></td>
+                  <td>Beatriz Rocha</td>
+                  <td>1x Chá gelado, 1x Torta de limão</td>
+                  <td>Mesa 02</td>
+                  <td>13:12</td>
+                  <td><strong>R$ 27,50</strong></td>
+                  <td><span class="status status-finalizado"><i class="bi bi-check2-all"></i> Entregue</span></td>
+                </tr>
+                <tr>
+                  <td><strong>#1017</strong></td>
+                  <td>Lucas Ferreira</td>
+                  <td>2x Cappuccino</td>
+                  <td>Para viagem</td>
+                  <td>12:55</td>
+                  <td><strong>R$ 24,00</strong></td>
+                  <td><span class="status status-cancelado"><i class="bi bi-x-circle"></i> Cancelado</span></td>
+                </tr>
+                <tr>
+                  <td><strong>#1016</strong></td>
+                  <td>Fernanda Dias</td>
+                  <td>1x Mocha, 1x Pão de queijo</td>
+                  <td>Varanda - Mesa 01</td>
+                  <td>12:40</td>
+                  <td><strong>R$ 22,50</strong></td>
+                  <td><span class="status status-finalizado"><i class="bi bi-check2-all"></i> Entregue</span></td>
+                </tr>
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="../static/js/admin.js"></script>
+
+</body>
+
+</html>

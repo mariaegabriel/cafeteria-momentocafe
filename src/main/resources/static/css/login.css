@@ -1,0 +1,273 @@
+/* ==================== LOGIN ==================== */
+
+.login-page {
+    background: linear-gradient(135deg, #f8f5f0 0%, #f0e8df 100%);
+}
+
+.login-section {
+    min-height: 100vh;
+    padding: 8rem 0 5rem;
+    display: flex;
+    align-items: center;
+}
+
+.login-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(107, 78, 55, 0.15);
+}
+
+/* ---------- Banner ---------- */
+
+.login-banner {
+    background: linear-gradient(135deg,
+            rgba(74, 55, 40, 0.88) 0%,
+            rgba(107, 78, 55, 0.8) 50%,
+            rgba(160, 130, 109, 0.7) 100%), url('https://images.unsplash.com/photo-1495521821757-a1efb6729352?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    padding: 3rem;
+}
+
+.login-banner-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+}
+
+.login-banner .mini-title {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--cream);
+    padding: 0.6rem 1.25rem;
+    border-radius: 50px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.login-banner h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.login-banner h1 span {
+    background: var(--gradient-cafe-light);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+}
+
+.login-banner p {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.login-beneficios {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.login-beneficios li {
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+}
+
+.login-beneficios i {
+    color: var(--cafe-light);
+    font-size: 1.2rem;
+}
+
+/* ---------- Formulário ---------- */
+
+.login-form-area {
+    padding: 3rem;
+}
+
+.login-icon {
+    font-size: 3.5rem;
+    background: var(--gradient-cafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+}
+
+.login-form-area h2 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.login-form-area h2 span {
+    background: var(--gradient-cafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.login-form .form-label {
+    font-weight: 500;
+    color: var(--chocolate);
+    font-size: 0.9rem;
+}
+
+.input-cafe {
+    position: relative;
+}
+
+.input-cafe i {
+    position: absolute;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cafe-claro);
+}
+
+.input-cafe .form-control {
+    padding: 0.8rem 1rem 0.8rem 2.8rem;
+    border-radius: 50px;
+    border: 2px solid #eee3d6;
+    background: #fdfaf6;
+    transition: all 0.3s ease;
+}
+
+.input-cafe .form-control:focus {
+    border-color: var(--cafe-light);
+    background: white;
+    box-shadow: 0 0 0 0.2rem rgba(107, 78, 55, 0.15);
+}
+
+/* Tipo de acesso (Cliente / Gerente) */
+
+.tipo-acesso {
+    display: flex;
+    background: #f5ede3;
+    border-radius: 50px;
+    padding: 0.3rem;
+    margin-bottom: 1.5rem;
+}
+
+.tipo-acesso input {
+    display: none;
+}
+
+.tipo-acesso label {
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--cafe-claro);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.tipo-acesso input:checked+label {
+    background: var(--gradient-cafe);
+    color: white;
+    box-shadow: 0 5px 15px rgba(107, 78, 55, 0.25);
+}
+
+.login-opcoes .form-check-label {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.login-opcoes .form-check-input:checked {
+    background-color: var(--cafe-principal);
+    border-color: var(--cafe-principal);
+}
+
+.link-cafe {
+    color: var(--cafe-principal);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link-cafe:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+.divisor {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.divisor::before,
+.divisor::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee3d6;
+}
+
+.divisor span {
+    color: var(--cafe-claro);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.cadastro-texto {
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* ---------- Responsivo ---------- */
+
+@media (max-width: 991px) {
+    .login-banner {
+        padding: 2.5rem 2rem;
+    }
+
+    .login-banner h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .login-section {
+        padding: 6.5rem 0 3rem;
+    }
+
+    .login-form-area {
+        padding: 2rem 1.5rem;
+    }
+
+    .login-opcoes {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.75rem;
+    }
+}

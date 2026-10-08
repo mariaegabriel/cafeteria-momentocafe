@@ -1,0 +1,534 @@
+/* ==================== ADMINISTRATIVO ==================== */
+
+.admin-page {
+    background: linear-gradient(135deg, #f8f5f0 0%, #f0e8df 100%);
+    min-height: 100vh;
+}
+
+.badge-admin {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--chocolate);
+    background: var(--gradient-cafe-light);
+    padding: 0.3rem 0.75rem;
+    border-radius: 50px;
+}
+
+.usuario-admin {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.usuario-admin span {
+    color: inherit;
+}
+
+/* ---------- Layout ---------- */
+
+.admin-wrapper {
+    display: flex;
+    padding-top: 76px;
+    min-height: 100vh;
+}
+
+.aba-input {
+    display: none;
+}
+
+/* ---------- Menu lateral ---------- */
+
+.admin-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--chocolate);
+    padding: 2rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 76px;
+    height: calc(100vh - 76px);
+}
+
+.sidebar-titulo {
+    color: var(--cafe-light);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.menu-item {
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    color: var(--cream);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-item i {
+    font-size: 1.2rem;
+}
+
+.menu-item:hover {
+    background: rgba(255, 230, 211, 0.1);
+    color: var(--cafe-light);
+}
+
+.menu-contador {
+    margin-left: auto;
+    background: rgba(255, 230, 211, 0.15);
+    color: var(--cream);
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#aba-atendimento:checked~.admin-sidebar .menu-atendimento,
+#aba-finalizados:checked~.admin-sidebar .menu-finalizados {
+    background: var(--gradient-cafe);
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+#aba-atendimento:checked~.admin-sidebar .menu-atendimento .menu-contador,
+#aba-finalizados:checked~.admin-sidebar .menu-finalizados .menu-contador {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+}
+
+.sidebar-rodape {
+    margin-top: auto;
+    color: rgba(255, 230, 211, 0.6);
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1rem;
+}
+
+/* ---------- Conteúdo ---------- */
+
+.admin-conteudo {
+    flex: 1;
+    padding: 2.5rem;
+    min-width: 0;
+}
+
+.painel {
+    display: none;
+}
+
+#aba-atendimento:checked~.admin-conteudo .painel-atendimento,
+#aba-finalizados:checked~.admin-conteudo .painel-finalizados {
+    display: block;
+}
+
+.painel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.painel-header .section-title {
+    margin-bottom: 0.25rem;
+}
+
+.painel-header h2 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.painel-header h2 span {
+    background: var(--gradient-cafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.input-busca {
+    position: relative;
+    width: 300px;
+    max-width: 100%;
+}
+
+.input-busca i {
+    position: absolute;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cafe-claro);
+}
+
+.input-busca .form-control {
+    padding: 0.7rem 1rem 0.7rem 2.75rem;
+    border-radius: 50px;
+    border: 2px solid #eee3d6;
+    background: white;
+}
+
+.input-busca .form-control:focus {
+    border-color: var(--cafe-light);
+    box-shadow: 0 0 0 0.2rem rgba(107, 78, 55, 0.15);
+}
+
+/* ---------- Cards de resumo ---------- */
+
+.resumo-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 5px 20px rgba(107, 78, 55, 0.08);
+    border-left: 5px solid var(--cafe-principal);
+    transition: all 0.3s ease;
+}
+
+.resumo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(107, 78, 55, 0.15);
+}
+
+.resumo-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gradient-cafe);
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.resumo-card span {
+    font-size: 0.85rem;
+    color: var(--cafe-claro);
+    font-weight: 500;
+}
+
+.resumo-card h3 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+/* ---------- Cards de pedido ---------- */
+
+.pedido-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 5px 20px rgba(107, 78, 55, 0.08);
+    border-top: 4px solid var(--cafe-principal);
+    transition: all 0.3s ease;
+}
+
+.pedido-card:hover {
+    box-shadow: 0 15px 40px rgba(107, 78, 55, 0.15);
+    transform: translateY(-5px);
+}
+
+.pedido-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pedido-topo h4 {
+    font-size: 1.15rem;
+    margin: 0;
+}
+
+.pedido-cliente {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--chocolate);
+    font-weight: 500;
+}
+
+.pedido-cliente>i {
+    color: var(--cafe-principal);
+}
+
+.pedido-hora {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--cafe-claro);
+}
+
+.pedido-itens {
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+    border-top: 1px dashed #e6d7c6;
+    border-bottom: 1px dashed #e6d7c6;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pedido-itens li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.92rem;
+}
+
+.pedido-itens li span:last-child {
+    color: var(--cafe-claro);
+}
+
+.pedido-observacao {
+    background: #fdf6ee;
+    border-radius: 10px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.85rem;
+    color: var(--cafe-principal);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pedido-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.pedido-info span {
+    font-size: 0.9rem;
+    color: var(--cafe-claro);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.pedido-info strong {
+    font-size: 1.2rem;
+    color: var(--chocolate);
+}
+
+.pedido-acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pedido-acoes .btn {
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+}
+
+.pedido-acoes .btn-cafe,
+.pedido-acoes .btn-outline-cafe {
+    justify-content: center;
+}
+
+.btn-outline-cafe {
+    background: transparent;
+    color: var(--cafe-principal);
+    border: 2px solid var(--cafe-light);
+    font-weight: 600;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-cafe:hover {
+    background: var(--cafe-principal);
+    border-color: var(--cafe-principal);
+    color: white;
+}
+
+/* ---------- Status ---------- */
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.status-novo {
+    background: #fff3cd;
+    color: #8a6d1a;
+}
+
+.status-preparo {
+    background: #f5e6d3;
+    color: var(--cafe-principal);
+}
+
+.status-pronto {
+    background: #e3f1e0;
+    color: #3f7a36;
+}
+
+.status-finalizado {
+    background: var(--gradient-cafe);
+    color: white;
+}
+
+.status-cancelado {
+    background: #f8e1df;
+    color: #a2443b;
+}
+
+/* ---------- Tabela de finalizados ---------- */
+
+.tabela-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(107, 78, 55, 0.08);
+}
+
+.tabela-cafe thead th {
+    background: var(--gradient-cafe-dark);
+    color: var(--cream);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem 1.25rem;
+    border: none;
+    white-space: nowrap;
+}
+
+.tabela-cafe tbody td {
+    padding: 1rem 1.25rem;
+    color: #555;
+    font-size: 0.92rem;
+    border-color: #f2e9df;
+}
+
+.tabela-cafe tbody td strong {
+    color: var(--chocolate);
+}
+
+.tabela-cafe tbody tr:hover td {
+    background: #fdf8f3;
+}
+
+/* ---------- Responsivo ---------- */
+
+@media (max-width: 991px) {
+    .admin-wrapper {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        padding: 1rem;
+    }
+
+    .admin-menu {
+        flex-direction: row;
+    }
+
+    .menu-item {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .menu-contador {
+        margin-left: 0.25rem;
+    }
+
+    .sidebar-titulo,
+    .sidebar-rodape {
+        display: none;
+    }
+
+    .admin-conteudo {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .menu-item {
+        font-size: 0.85rem;
+        padding: 0.75rem 0.5rem;
+    }
+
+    .painel-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .input-busca {
+        width: 100%;
+    }
+}
+
+/* ---------- Lista vazia ---------- */
+
+.admin-vazio {
+    background: white;
+    border-radius: 15px;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(107, 78, 55, 0.08);
+}
+
+.admin-vazio i {
+    font-size: 3rem;
+    background: var(--gradient-cafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.admin-vazio h3 {
+    font-size: 1.3rem;
+    margin: 1rem 0 0.5rem;
+}
+
+.admin-vazio p {
+    margin: 0;
+}

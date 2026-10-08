@@ -1,0 +1,407 @@
+/* ==================== PÁGINA DE CADASTRO ==================== */
+/* Complementa o style.css (variáveis, navbar, botões e footer) */
+
+.cadastro-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f5f0 0%, #f0e8df 100%);
+}
+
+.cadastro-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 8rem 0 4rem;
+}
+
+.cadastro-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 50px rgba(107, 78, 55, 0.18);
+}
+
+/* ---------- Lado esquerdo (banner) ---------- */
+
+.cadastro-banner {
+    background: var(--gradient-cafe-dark);
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 3rem 2.5rem;
+    overflow: hidden;
+}
+
+.cadastro-banner::before,
+.cadastro-banner::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(212, 165, 116, 0.12);
+}
+
+.cadastro-banner::before {
+    width: 260px;
+    height: 260px;
+    top: -90px;
+    right: -90px;
+}
+
+.cadastro-banner::after {
+    width: 200px;
+    height: 200px;
+    bottom: -70px;
+    left: -60px;
+}
+
+.cadastro-banner-content {
+    position: relative;
+    z-index: 1;
+}
+
+.cadastro-banner .mini-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255, 230, 211, 0.12);
+    color: var(--cafe-light);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 1.25rem;
+}
+
+.cadastro-banner h1 {
+    color: var(--cream);
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+}
+
+.cadastro-banner h1 span {
+    display: block;
+    color: var(--cafe-light);
+}
+
+.cadastro-banner p {
+    color: rgba(255, 230, 211, 0.85);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.cadastro-beneficios {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.cadastro-beneficios li {
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+}
+
+.cadastro-beneficios i {
+    color: var(--cafe-light);
+}
+
+/* ---------- Lado direito (formulário) ---------- */
+
+.cadastro-form-area {
+    padding: 2.5rem 2.5rem 2rem;
+}
+
+.cadastro-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--gradient-cafe);
+    color: white;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
+    box-shadow: 0 8px 20px rgba(107, 78, 55, 0.3);
+}
+
+.cadastro-form-area h2 {
+    font-size: 1.9rem;
+}
+
+.cadastro-form-area h2 span {
+    background: var(--gradient-cafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cadastro-form .form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--chocolate);
+    margin-bottom: 0.35rem;
+}
+
+/* ---------- Tipo de conta ---------- */
+
+.tipo-conta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    background: var(--cream);
+    padding: 0.35rem;
+    border-radius: 50px;
+    margin-bottom: 1.25rem;
+}
+
+.tipo-conta input {
+    display: none;
+}
+
+.tipo-conta label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-radius: 50px;
+    color: var(--cafe-principal);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tipo-conta input:checked+label {
+    background: var(--gradient-cafe);
+    color: white;
+    box-shadow: 0 4px 12px rgba(107, 78, 55, 0.3);
+}
+
+/* ---------- Campos ---------- */
+
+.campo-cafe {
+    position: relative;
+}
+
+.campo-cafe>i {
+    position: absolute;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cafe-claro);
+    pointer-events: none;
+}
+
+.campo-cafe .form-control {
+    padding: 0.75rem 1rem 0.75rem 2.9rem;
+    border-radius: 12px;
+    border: 2px solid var(--cream);
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.campo-cafe .form-control:focus {
+    border-color: var(--cafe-light);
+    box-shadow: 0 0 0 0.2rem rgba(107, 78, 55, 0.12);
+}
+
+.campo-cafe.invalido .form-control {
+    border-color: #d9867b;
+    background: #fffafa;
+}
+
+.campo-cafe.valido .form-control {
+    border-color: #b9a78a;
+}
+
+.campo-erro {
+    display: block;
+    min-height: 1.1rem;
+    margin-top: 0.25rem;
+    color: #b23b3b;
+    font-size: 0.8rem;
+}
+
+.ver-senha {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    color: var(--cafe-claro);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.ver-senha i {
+    position: static;
+    transform: none;
+    color: inherit;
+    pointer-events: none;
+}
+
+.ver-senha:hover {
+    background: var(--cream);
+    color: var(--cafe-principal);
+}
+
+.campo-cafe .form-control[type="password"],
+.campo-cafe .form-control#senha,
+.campo-cafe .form-control#confirmarSenha {
+    padding-right: 3rem;
+}
+
+/* ---------- Força da senha ---------- */
+
+.forca-senha {
+    margin-top: 0.4rem;
+}
+
+.forca-barras {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+}
+
+.forca-barras span {
+    display: block;
+    height: 5px;
+    border-radius: 5px;
+    background: #eadccd;
+    transition: background 0.3s ease;
+}
+
+.forca-senha small {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.78rem;
+    color: var(--cafe-claro);
+}
+
+.forca-senha[data-nivel="1"] .forca-barras span:nth-child(-n+1) {
+    background: #d9867b;
+}
+
+.forca-senha[data-nivel="2"] .forca-barras span:nth-child(-n+2) {
+    background: #e0a95c;
+}
+
+.forca-senha[data-nivel="3"] .forca-barras span:nth-child(-n+3) {
+    background: #b9a45a;
+}
+
+.forca-senha[data-nivel="4"] .forca-barras span:nth-child(-n+4) {
+    background: #6f9b5a;
+}
+
+/* ---------- Termos, erros e rodapé do form ---------- */
+
+.termos {
+    font-size: 0.88rem;
+}
+
+.termos .form-check-input:checked {
+    background-color: var(--cafe-principal);
+    border-color: var(--cafe-principal);
+}
+
+.termos .form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(107, 78, 55, 0.2);
+    border-color: var(--cafe-light);
+}
+
+.link-cafe {
+    color: var(--cafe-principal);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.link-cafe:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+.form-erro-geral {
+    color: #b23b3b;
+    text-align: center;
+    min-height: 1.3rem;
+    margin: 0.5rem 0 0;
+    font-size: 0.9rem;
+}
+
+.login-texto {
+    margin: 1.25rem 0 0;
+}
+
+/* ---------- Sucesso ---------- */
+
+.cadastro-sucesso {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.cadastro-sucesso>i {
+    display: block;
+    font-size: 4rem;
+    color: var(--success);
+    margin-bottom: 0.75rem;
+}
+
+.cadastro-sucesso p {
+    max-width: 420px;
+    margin: 0.75rem auto 1.5rem;
+    line-height: 1.6;
+}
+
+.cadastro-sucesso .btn {
+    display: inline-flex;
+    width: auto;
+}
+
+/* ---------- Responsivo ---------- */
+
+@media (max-width: 991px) {
+    .cadastro-section {
+        padding-top: 7rem;
+    }
+
+    .cadastro-banner {
+        padding: 2rem 1.75rem;
+    }
+
+    .cadastro-banner h1 {
+        font-size: 1.7rem;
+    }
+
+    .cadastro-form-area {
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .cadastro-banner p,
+    .cadastro-beneficios {
+        display: none;
+    }
+
+    .cadastro-banner h1 {
+        margin-bottom: 0;
+    }
+}

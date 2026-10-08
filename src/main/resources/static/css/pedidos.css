@@ -1,0 +1,513 @@
+/* ==================== PÁGINA DE PEDIDOS ==================== */
+/* Complementa o style.css (variáveis, navbar, botões e footer) */
+
+.pagina-pedidos {
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.pedidos-main {
+    flex: 1;
+    padding: 4rem 0 5rem;
+}
+
+/* ==================== CONTROLE DE ACESSO ==================== */
+
+.somente-logado,
+.somente-deslogado {
+    display: none !important;
+}
+
+body.logado .somente-logado,
+body.deslogado .somente-deslogado {
+    display: block !important;
+}
+
+body.logado li.somente-logado,
+body.deslogado li.somente-deslogado {
+    display: list-item !important;
+}
+
+/* ==================== NAVBAR - USUÁRIO ==================== */
+
+.usuario-nav {
+    display: flex !important;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: none !important;
+}
+
+.avatar-usuario {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--gradient-cafe);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.navbar-cafe .usuario-nav span:not(.avatar-usuario) {
+    color: var(--cream);
+}
+
+.dropdown-cafe {
+    border: none;
+    border-radius: 15px;
+    padding: 0.5rem;
+    box-shadow: 0 10px 30px rgba(107, 78, 55, 0.2);
+    margin-top: 0.75rem !important;
+}
+
+.dropdown-cafe .dropdown-item {
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    color: var(--chocolate);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-cafe .dropdown-item:hover,
+.dropdown-cafe .dropdown-item:focus {
+    background: var(--cream);
+    color: var(--cafe-principal);
+}
+
+.dropdown-cafe .item-sair,
+.dropdown-cafe .item-sair:hover {
+    color: #b5452f;
+}
+
+/* ==================== ACESSO RESTRITO ==================== */
+
+.acesso-card {
+    max-width: 520px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(107, 78, 55, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.acesso-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gradient-cafe);
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+    box-shadow: 0 8px 20px rgba(107, 78, 55, 0.3);
+}
+
+.acesso-card h2 {
+    font-size: 1.8rem;
+}
+
+.acesso-card p {
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.link-voltar {
+    color: var(--cafe-claro);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.3s ease;
+}
+
+.link-voltar:hover {
+    color: var(--cafe-principal);
+}
+
+/* ==================== PERFIL ==================== */
+
+.perfil-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(107, 78, 55, 0.08);
+    position: sticky;
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.perfil-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: var(--gradient-cafe);
+    color: white;
+    font-size: 2.2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+    border: 4px solid var(--cream);
+}
+
+.perfil-card h3 {
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.perfil-email {
+    font-size: 0.9rem;
+    color: var(--cafe-claro);
+    word-break: break-all;
+}
+
+.perfil-resumo {
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0 0 0.5rem;
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid var(--cream);
+    border-bottom: 1px solid var(--cream);
+}
+
+.perfil-resumo li {
+    display: flex;
+    flex-direction: column;
+}
+
+.perfil-resumo span {
+    font-size: 1.6rem;
+    font-weight: 700;
+    background: var(--gradient-cafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.perfil-resumo small {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.btn-sair {
+    background: transparent;
+    color: #b5452f;
+    border: 2px solid #f0d5cc;
+    border-radius: 50px;
+    font-weight: 600;
+    padding: 0.65rem 1.5rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-sair:hover {
+    background: #b5452f;
+    border-color: #b5452f;
+    color: white;
+}
+
+/* ==================== TOPO DA LISTA ==================== */
+
+.pedidos-topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.pedidos-topo h2 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.pedidos-topo h2 span {
+    background: var(--gradient-cafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.pedidos-topo .section-title {
+    margin-bottom: 0.25rem;
+}
+
+.filtros-pedidos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.filtro {
+    background: white;
+    border: 1px solid var(--cream);
+    color: var(--cafe-principal);
+    border-radius: 50px;
+    padding: 0.45rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.filtro:hover {
+    border-color: var(--cafe-light);
+}
+
+.filtro.ativo {
+    background: var(--gradient-cafe);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 4px 12px rgba(107, 78, 55, 0.25);
+}
+
+/* ==================== CARD DO PEDIDO ==================== */
+
+.lista-pedidos {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.pedido-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 20px rgba(107, 78, 55, 0.08);
+    border-left: 5px solid var(--cafe-light);
+    transition: all 0.3s ease;
+}
+
+.pedido-card:hover {
+    box-shadow: 0 12px 30px rgba(107, 78, 55, 0.15);
+    transform: translateY(-4px);
+}
+
+.pedido-card[data-status="entregue"] {
+    border-left-color: var(--success);
+}
+
+.pedido-card[data-status="cancelado"] {
+    border-left-color: #c9b8ab;
+}
+
+.pedido-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.pedido-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: var(--gradient-cafe-light);
+    color: var(--cafe-principal);
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pedido-info {
+    flex: 1;
+}
+
+.pedido-info h3 {
+    font-size: 1.1rem;
+    margin: 0 0 0.2rem;
+}
+
+.pedido-info small {
+    color: #888;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.status-badge {
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.status-preparo {
+    background: #fdf1e3;
+    color: #b9772e;
+}
+
+.status-entregue {
+    background: #eef3e6;
+    color: #5d7a3a;
+}
+
+.status-cancelado {
+    background: #f4eeea;
+    color: #8a7768;
+}
+
+.pedido-itens {
+    list-style: none;
+    padding: 1rem 0;
+    margin: 1rem 0 0;
+    border-top: 1px dashed var(--cream);
+    border-bottom: 1px dashed var(--cream);
+}
+
+.pedido-itens li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    font-size: 0.95rem;
+}
+
+.pedido-itens li span:last-child {
+    color: var(--chocolate);
+    font-weight: 500;
+}
+
+.pedido-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+}
+
+.pedido-rodape span {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.pedido-rodape strong {
+    font-size: 1.3rem;
+    color: var(--cafe-principal);
+}
+
+/* ==================== LISTA VAZIA ==================== */
+
+.pedidos-vazio {
+    background: white;
+    border-radius: 15px;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(107, 78, 55, 0.08);
+}
+
+.pedidos-vazio i.bi-cup {
+    font-size: 3rem;
+    color: var(--cafe-light);
+}
+
+.pedidos-vazio h3 {
+    font-size: 1.3rem;
+    margin: 1rem 0 0.5rem;
+}
+
+.pedidos-vazio .btn-cafe {
+    display: inline-flex;
+    margin-top: 1rem;
+}
+
+/* ==================== MODAL SAIR ==================== */
+
+.modal-cafe .modal-content {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(74, 55, 40, 0.3);
+}
+
+.modal-cafe .modal-body {
+    padding: 2.5rem 2rem;
+}
+
+.modal-cafe h3 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.modal-acoes {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-cancelar {
+    background: var(--cream);
+    color: var(--chocolate);
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.btn-cancelar:hover {
+    background: var(--cafe-light);
+    color: white;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 991px) {
+    .perfil-card {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .pedidos-topo h2 {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pedido-cabecalho {
+        align-items: flex-start;
+    }
+
+    .status-badge {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modal-acoes {
+        flex-direction: column;
+    }
+}
