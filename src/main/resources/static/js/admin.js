@@ -1,264 +1,239 @@
-/* ==================== ADMINISTRATIVO (somente gerentes) ==================== */
+// admin.js — painel do gerente (Momento Café)
+(() => {
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
-const CHAVE_USUARIO = 'usuarioLogado';
-const CHAVE_PEDIDOS = 'pedidos';
+  const lista = $('#lista-atendimento');
+  const tabela = $('#tabela-finalizados');
 
-const STATUS = {
-    novo: { texto: 'Novo', icone: 'bi-bell-fill', classe: 'status-novo' },
-    preparo: { texto: 'Em preparo', icone: 'bi-fire', classe: 'status-preparo' },
-    pronto: { texto: 'Pronto', icone: 'bi-cup-hot-fill', classe: 'status-pronto' },
-    entregue: { texto: 'Entregue', icone: 'bi-check2-all', classe: 'status-finalizado' },
-    cancelado: { texto: 'Cancelado', icone: 'bi-x-circle', classe: 'status-cancelado' }
-};
+  // ---------- Etapas do pedido ----------
+  const ETAPAS = {
+    novo: { classe: 'status-novo', icone: 'bi-bell-fill', texto: 'Novo', botao: ['bi-play-fill', 'Iniciar preparo'], proximo: 'preparo' },
+    preparo: { classe: 'status-preparo', icone: 'bi-fire', texto: 'Em preparo', botao: ['bi-check-lg', 'Marcar como pronto'], proximo: 'pronto' },
+    pronto: { classe: 'status-pronto', icone: 'bi-cup-hot-fill', texto: 'Pronto', botao: ['bi-check2-all', 'Finalizar'], proximo: null }
+  };
 
-const PROXIMA_ETAPA = {
-    novo: { status: 'preparo', texto: 'Iniciar preparo', icone: 'bi-play-fill' },
-    preparo: { status: 'pronto', texto: 'Marcar como pronto', icone: 'bi-check-lg' },
-    pronto: { status: 'entregue', texto: 'Finalizar', icone: 'bi-check2-all' }
-};
+  const etapaDe = card => Object.keys(ETAPAS).find(k => $('.status', card).classList.contains(ETAPAS[k].classe));
 
-const EM_ATENDIMENTO = ['novo', 'preparo', 'pronto'];
-const FINALIZADOS = ['entregue', 'cancelado'];
+  function setEtapa(card, chave) {
+    const e = ETAPAS[chave];
+    const status = $('.status', card);
+    status.className = `status ${e.classe}`;
+    status.innerHTML = `<i class="bi ${e.icone}"></i> ${e.texto}`;
+    $('.btn-cafe', card).innerHTML = `<i class="bi ${e.botao[0]}"></i> ${e.botao[1]}`;
+  }
 
-// ---------- Utilitários ----------
+  // ---------- Utilitários ----------
+  const normalizar = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const paraNumero = t => parseFloat(t.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+  const moeda = n => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }).replace(/\u00a0/g, ' ');
+  const esc = t => t.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-function obterUsuario() {
-    return JSON.parse(localStorage.getItem(CHAVE_USUARIO) || 'null');
-}
+  function aviso(msg, tipo = 'success') {
+    const el = document.createElement('div');
+    el.className = `toast align-items-center text-bg-${tipo} border-0`;
+    el.setAttribute('role', 'status');
+    el.innerHTML = `<div class="d-flex"><div class="toast-body">${esc(msg)}</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button></div>`;
+    $('#toast-area').appendChild(el);
+    el.addEventListener('hidden.bs.toast', () => el.remove());
+    new bootstrap.Toast(el, { delay: 3000 }).show();
+  }
 
-function obterPedidos() {
-    return JSON.parse(localStorage.getItem(CHAVE_PEDIDOS) || '[]');
-}
+  // ---------- Dados do pedido ----------
+  function dadosDoCard(card) {
+    const cliente = $('.pedido-cliente', card).cloneNode(true);
+    $$('.pedido-hora, i', cliente).forEach(n => n.remove());
+    return {
+      id: $('h4', card).textContent.replace('Pedido', '').trim(),
+      cliente: cliente.textContent.trim(),
+      itens: $$('.pedido-itens li', card).map(li => $('span', li).textContent.trim()).join(', '),
+      local: $('.pedido-info span', card).textContent.trim(),
+      hora: $('.pedido-hora', card).textContent.trim(),
+      total: $('.pedido-info strong', card).textContent.trim()
+    };
+  }
 
-function salvarPedidos(pedidos) {
-    localStorage.setItem(CHAVE_PEDIDOS, JSON.stringify(pedidos));
-}
+  function criarLinha(d, cancelado) {
+    const tr = document.createElement('tr');
+    tr.className = 'nova-linha';
+    const status = cancelado
+      ? '<span class="status status-cancelado"><i class="bi bi-x-circle"></i> Cancelado</span>'
+      : '<span class="status status-finalizado"><i class="bi bi-check2-all"></i> Entregue</span>';
+    tr.innerHTML = `<td><strong>${esc(d.id)}</strong></td><td>${esc(d.cliente)}</td><td>${esc(d.itens)}</td>
+      <td>${esc(d.local)}</td><td>${esc(d.hora)}</td><td><strong>${esc(d.total)}</strong></td><td>${status}</td>`;
+    return tr;
+  }
 
-function formatarPreco(valor) {
-    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
+  function encerrar(card, cancelado) {
+    const dados = dadosDoCard(card);
+    const coluna = card.closest('[class*="col-"]');
+    card.classList.add('saindo');
+    setTimeout(() => {
+      coluna.remove();
+      tabela.prepend(criarLinha(dados, cancelado));
+      atualizar();
+    }, 250);
+    aviso(cancelado ? `Pedido ${dados.id} cancelado.` : `Pedido ${dados.id} finalizado.`, cancelado ? 'danger' : 'success');
+  }
 
-function formatarHora(dataIso) {
-    return new Date(dataIso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-}
+  // ---------- Ações dos botões ----------
+  lista.addEventListener('click', e => {
+    const btn = e.target.closest('button');
+    const card = btn && btn.closest('.pedido-card');
+    if (!card) return;
 
-function ehHoje(dataIso) {
-    return new Date(dataIso).toDateString() === new Date().toDateString();
-}
-
-function escaparHtml(texto) {
-    const div = document.createElement('div');
-    div.textContent = texto ?? '';
-    return div.innerHTML;
-}
-
-function correspondeBusca(pedido, termo) {
-    if (!termo) return true;
-    const alvo = `${pedido.id} #${pedido.id} ${pedido.cliente.nome} ${pedido.local}`.toLowerCase();
-    return alvo.includes(termo.toLowerCase());
-}
-
-// Pedidos de exemplo para a primeira vez que o painel é aberto
-function criarPedidosExemplo() {
-    const minutosAtras = (min) => new Date(Date.now() - min * 60000).toISOString();
-
-    return [
-        { id: 1024, cliente: { nome: 'Ana Souza', email: 'ana@email.com' }, itens: [{ nome: 'Cappuccino', preco: 12, qtd: 2 }, { nome: 'Pão de Queijo', preco: 8, qtd: 1 }], local: 'Mesa 05', observacao: '', status: 'novo', data: minutosAtras(5) },
-        { id: 1023, cliente: { nome: 'Carlos Lima', email: 'carlos@email.com' }, itens: [{ nome: 'Café Expresso', preco: 8, qtd: 1 }, { nome: 'Croissant', preco: 10, qtd: 1 }], local: 'Balcão', observacao: '', status: 'preparo', data: minutosAtras(12) },
-        { id: 1022, cliente: { nome: 'Juliana Alves', email: 'juliana@email.com' }, itens: [{ nome: 'Café Gelado', preco: 11, qtd: 1 }, { nome: 'Brownie', preco: 12, qtd: 1 }], local: 'Mesa 12', observacao: '', status: 'pronto', data: minutosAtras(25) },
-        { id: 1021, cliente: { nome: 'Pedro Martins', email: 'pedro@email.com' }, itens: [{ nome: 'Frappé', preco: 15, qtd: 2 }], local: 'Delivery - Rua das Flores, 45', observacao: 'Um sem açúcar, por favor.', status: 'preparo', data: minutosAtras(32) },
-        { id: 1020, cliente: { nome: 'Mariana Costa', email: 'mariana@email.com' }, itens: [{ nome: 'Cappuccino', preco: 12, qtd: 2 }, { nome: 'Brownie', preco: 12, qtd: 1 }], local: 'Mesa 08', observacao: '', status: 'entregue', data: minutosAtras(50) },
-        { id: 1019, cliente: { nome: 'Lucas Ferreira', email: 'lucas@email.com' }, itens: [{ nome: 'Cold Brew', preco: 14, qtd: 1 }], local: 'Balcão', observacao: '', status: 'cancelado', data: minutosAtras(70) }
-    ].map(p => ({ ...p, total: p.itens.reduce((soma, i) => soma + i.preco * i.qtd, 0), atualizadoEm: p.data }));
-}
-
-// ---------- Renderização ----------
-
-function renderizarCard(pedido) {
-    const status = STATUS[pedido.status];
-    const proxima = PROXIMA_ETAPA[pedido.status];
-
-    const itens = pedido.itens.map(item => `
-        <li><span>${item.qtd}x ${escaparHtml(item.nome)}</span> <span>${formatarPreco(item.preco * item.qtd)}</span></li>
-    `).join('');
-
-    const observacao = pedido.observacao ? `
-        <div class="pedido-observacao">
-            <i class="bi bi-chat-left-text-fill"></i>
-            ${escaparHtml(pedido.observacao)}
-        </div>` : '';
-
-    const iconeLocal = pedido.local.startsWith('Delivery') ? 'bi-truck'
-        : pedido.local.startsWith('Balcão') ? 'bi-bag-fill' : 'bi-geo-alt-fill';
-
-    return `
-        <div class="col-md-6 col-xxl-4">
-            <div class="pedido-card">
-
-                <div class="pedido-topo">
-                    <h4>Pedido #${pedido.id}</h4>
-                    <span class="status ${status.classe}">
-                        <i class="bi ${status.icone}"></i>
-                        ${status.texto}
-                    </span>
-                </div>
-
-                <div class="pedido-cliente">
-                    <i class="bi bi-person-fill"></i>
-                    ${escaparHtml(pedido.cliente.nome)}
-                    <span class="pedido-hora"><i class="bi bi-clock"></i> ${formatarHora(pedido.data)}</span>
-                </div>
-
-                <ul class="pedido-itens">${itens}</ul>
-
-                ${observacao}
-
-                <div class="pedido-info">
-                    <span><i class="bi ${iconeLocal}"></i> ${escaparHtml(pedido.local)}</span>
-                    <strong>${formatarPreco(pedido.total)}</strong>
-                </div>
-
-                <div class="pedido-acoes">
-                    <button type="button" class="btn btn-cafe btn-sm" data-acao="avancar" data-id="${pedido.id}">
-                        <i class="bi ${proxima.icone}"></i>
-                        ${proxima.texto}
-                    </button>
-                    <button type="button" class="btn btn-outline-cafe btn-sm" data-acao="cancelar" data-id="${pedido.id}">
-                        <i class="bi bi-x-lg"></i>
-                        Cancelar
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    `;
-}
-
-function renderizarLinha(pedido) {
-    const status = STATUS[pedido.status];
-    const itens = pedido.itens.map(i => `${i.qtd}x ${i.nome}`).join(', ');
-
-    return `
-        <tr>
-            <td><strong>#${pedido.id}</strong></td>
-            <td>${escaparHtml(pedido.cliente.nome)}</td>
-            <td>${escaparHtml(itens)}</td>
-            <td>${escaparHtml(pedido.local)}</td>
-            <td>${formatarHora(pedido.data)}</td>
-            <td><strong>${formatarPreco(pedido.total)}</strong></td>
-            <td><span class="status ${status.classe}"><i class="bi ${status.icone}"></i> ${status.texto}</span></td>
-        </tr>
-    `;
-}
-
-function renderizarResumo(pedidos) {
-    const emAtendimento = pedidos.filter(p => EM_ATENDIMENTO.includes(p.status)).length;
-    const finalizados = pedidos.filter(p => FINALIZADOS.includes(p.status)).length;
-    const faturamento = pedidos
-        .filter(p => p.status === 'entregue' && ehHoje(p.data))
-        .reduce((soma, p) => soma + p.total, 0);
-
-    document.getElementById('resumoHoje').textContent = pedidos.filter(p => ehHoje(p.data)).length;
-    document.getElementById('resumoAtendimento').textContent = emAtendimento;
-    document.getElementById('resumoFinalizados').textContent = finalizados;
-    document.getElementById('resumoFaturamento').textContent = formatarPreco(faturamento);
-    document.getElementById('contadorAtendimento').textContent = emAtendimento;
-    document.getElementById('contadorFinalizados').textContent = finalizados;
-}
-
-function renderizarAtendimento(pedidos) {
-    const termo = document.getElementById('buscaAtendimento').value.trim();
-    const lista = pedidos
-        .filter(p => EM_ATENDIMENTO.includes(p.status) && correspondeBusca(p, termo))
-        .sort((a, b) => new Date(a.data) - new Date(b.data));
-
-    document.getElementById('listaAtendimento').innerHTML = lista.map(renderizarCard).join('');
-    document.getElementById('atendimentoVazio').classList.toggle('d-none', lista.length > 0);
-}
-
-function renderizarFinalizados(pedidos) {
-    const termo = document.getElementById('buscaFinalizados').value.trim();
-    const lista = pedidos
-        .filter(p => FINALIZADOS.includes(p.status) && correspondeBusca(p, termo))
-        .sort((a, b) => new Date(b.atualizadoEm || b.data) - new Date(a.atualizadoEm || a.data));
-
-    const tabela = document.getElementById('tabelaFinalizados');
-    tabela.innerHTML = lista.map(renderizarLinha).join('');
-    tabela.closest('.tabela-card').classList.toggle('d-none', lista.length === 0);
-    document.getElementById('finalizadosVazio').classList.toggle('d-none', lista.length > 0);
-}
-
-function renderizarTudo() {
-    const pedidos = obterPedidos();
-    renderizarResumo(pedidos);
-    renderizarAtendimento(pedidos);
-    renderizarFinalizados(pedidos);
-}
-
-// ---------- Ações ----------
-
-function atualizarStatus(id, novoStatus) {
-    const pedidos = obterPedidos();
-    const pedido = pedidos.find(p => p.id === id);
-    if (!pedido) return;
-
-    pedido.status = novoStatus;
-    pedido.atualizadoEm = new Date().toISOString();
-    salvarPedidos(pedidos);
-    renderizarTudo();
-}
-
-function tratarCliqueAcao(evento) {
-    const botao = evento.target.closest('[data-acao]');
-    if (!botao) return;
-
-    const id = Number(botao.dataset.id);
-    const pedido = obterPedidos().find(p => p.id === id);
-    if (!pedido) return;
-
-    if (botao.dataset.acao === 'avancar') {
-        atualizarStatus(id, PROXIMA_ETAPA[pedido.status].status);
-    } else if (confirm(`Deseja cancelar o pedido #${id}?`)) {
-        atualizarStatus(id, 'cancelado');
-    }
-}
-
-// ---------- Inicialização ----------
-
-function iniciarPainel(usuario) {
-    document.querySelectorAll('[data-usuario-nome]').forEach(el => {
-        el.textContent = usuario.nome;
-    });
-
-    if (localStorage.getItem(CHAVE_PEDIDOS) === null) {
-        salvarPedidos(criarPedidosExemplo());
+    if (btn.classList.contains('btn-outline-cafe')) {
+      const id = $('h4', card).textContent;
+      if (confirm(`Cancelar o ${id}?`)) encerrar(card, true);
+      return;
     }
 
-    document.getElementById('listaAtendimento').addEventListener('click', tratarCliqueAcao);
-    document.getElementById('buscaAtendimento').addEventListener('input', renderizarTudo);
-    document.getElementById('buscaFinalizados').addEventListener('input', renderizarTudo);
+    const etapa = ETAPAS[etapaDe(card)];
+    if (etapa.proximo) {
+      setEtapa(card, etapa.proximo);
+      aviso(`${$('h4', card).textContent}: ${ETAPAS[etapa.proximo].texto.toLowerCase()}.`, 'info');
+    } else {
+      encerrar(card, false);
+    }
+  });
 
-    document.getElementById('btnSair').addEventListener('click', (evento) => {
-        evento.preventDefault();
-        localStorage.removeItem(CHAVE_USUARIO);
-        window.location.href = 'login.html';
+  // ---------- Busca ----------
+  function vazio(ref, id) {
+    const p = document.createElement('p');
+    p.id = id;
+    p.className = 'vazio-estado';
+    p.hidden = true;
+    ref.after(p);
+    return p;
+  }
+  const vazioLista = vazio(lista, 'vazio-atendimento');
+  const vazioTabela = vazio($('.table-responsive'), 'vazio-finalizados');
+
+  function filtrar() {
+    const q1 = normalizar($('#busca-atendimento').value.trim());
+    const cols = $$('[class*="col-"]', lista);
+    cols.forEach(c => c.classList.toggle('d-none', !normalizar(c.textContent).includes(q1)));
+    const vis1 = cols.filter(c => !c.classList.contains('d-none')).length;
+    vazioLista.hidden = vis1 > 0;
+    vazioLista.textContent = cols.length ? 'Nenhum pedido encontrado.' : 'Nenhum pedido em atendimento. ☕';
+
+    const q2 = normalizar($('#busca-finalizados').value.trim());
+    const linhas = $$('tr', tabela);
+    linhas.forEach(tr => tr.classList.toggle('d-none', !normalizar(tr.textContent).includes(q2)));
+    const vis2 = linhas.filter(tr => !tr.classList.contains('d-none')).length;
+    vazioTabela.hidden = vis2 > 0;
+    vazioTabela.textContent = linhas.length ? 'Nenhum pedido encontrado.' : 'Nenhum pedido finalizado ainda.';
+  }
+  $('#busca-atendimento').addEventListener('input', filtrar);
+  $('#busca-finalizados').addEventListener('input', filtrar);
+
+  // ---------- Contadores e faturamento ----------
+  function atualizar() {
+    const ativos = $$('.pedido-card', lista);
+    const linhas = $$('tr', tabela);
+    // Faturamento = soma dos pedidos não cancelados
+    const total =
+      ativos.reduce((s, c) => s + paraNumero($('.pedido-info strong', c).textContent), 0) +
+      linhas.filter(tr => !$('.status-cancelado', tr))
+        .reduce((s, tr) => s + paraNumero($('td:nth-child(6)', tr).textContent), 0);
+
+    $('#contador-atendimento').textContent = ativos.length;
+    $('#contador-finalizados').textContent = linhas.length;
+    $('#resumo-atendimento').textContent = ativos.length;
+    $('#resumo-finalizados').textContent = linhas.length;
+    $('#resumo-total').textContent = ativos.length + linhas.length;
+    $('#resumo-faturamento').textContent = moeda(total);
+    filtrar();
+  }
+
+  // ---------- Abas (botões no topo) ----------
+  $$('.aba-btn').forEach(btn => btn.addEventListener('click', () => {
+    $$('.aba-btn').forEach(b => {
+      const ativo = b === btn;
+      b.classList.toggle('ativo', ativo);
+      b.setAttribute('aria-selected', ativo);
     });
+    $$('.painel').forEach(p => p.classList.toggle('ativo', p.id === btn.dataset.alvo));
+  }));
 
-    // Atualiza o painel quando um cliente faz um pedido em outra aba
-    window.addEventListener('storage', (evento) => {
-        if (evento.key === CHAVE_PEDIDOS) renderizarTudo();
-        if (evento.key === CHAVE_USUARIO && obterUsuario()?.perfil !== 'gerente') {
-            window.location.replace('login.html?redirect=admin.html');
-        }
-    });
+  // ---------- Login do funcionário ----------
+  const raiz = document.documentElement;
+  const definirAcesso = gerente => {
+    raiz.classList.toggle('is-gerente', gerente);
+    raiz.classList.toggle('is-visitante', !gerente);
+  };
 
-    renderizarTudo();
-}
+  $('#formLoginFuncionario').addEventListener('submit', e => {
+    e.preventDefault();
+    const email = $('#funcEmail').value.trim().toLowerCase();
+    const senha = $('#funcSenha').value;
+    const erroEl = $('#funcErro');
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    const user = usuarios.find(u => u.email === email && u.senha === senha);
 
-const usuarioAtual = obterUsuario();
+    if (!email || !senha) { erroEl.textContent = 'Informe e-mail e senha.'; return; }
+    if (!user) { erroEl.textContent = 'E-mail ou senha incorretos.'; return; }
+    if (user.tipo !== 'gerente') { erroEl.textContent = 'Esta conta não tem acesso de gerente.'; return; }
 
-if (!usuarioAtual || usuarioAtual.perfil !== 'gerente') {
-    window.location.replace('login.html?redirect=admin.html');
-} else {
-    iniciarPainel(usuarioAtual);
-}
+    erroEl.textContent = '';
+    localStorage.setItem('tipoUsuario', 'gerente');
+    e.target.reset();
+    definirAcesso(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // login.js — Momento Café
+    // Valida e-mail e senha contra as contas criadas no cadastro (localStorage, chave "usuarios").
+    (() => {
+      const form = document.querySelector('form');
+      if (!form) return;
+
+      const campoSenha = form.querySelector('input[type="password"]');
+      const campoEmail =
+        form.querySelector('input[type="email"]') ||
+        [...form.querySelectorAll('input')].find(i => !['password', 'checkbox', 'hidden'].includes(i.type));
+
+      // Mensagem de erro (usa uma existente ou cria uma)
+      let erroEl = form.querySelector('[role="alert"], .form-erro-geral, .erro-login');
+      if (!erroEl) {
+        erroEl = document.createElement('p');
+        erroEl.setAttribute('role', 'alert');
+        erroEl.style.cssText = 'color:#b3261e;font-size:.9rem;margin:.5rem 0';
+        form.querySelector('button[type="submit"]').before(erroEl);
+      }
+      const mostrarErro = msg => { erroEl.textContent = msg; };
+
+      [campoEmail, campoSenha].forEach(c => c.addEventListener('input', () => mostrarErro('')));
+
+      form.setAttribute('novalidate', '');
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        const email = campoEmail.value.trim().toLowerCase();
+        const senha = campoSenha.value;
+
+        if (!email || !senha) return mostrarErro('Informe e-mail e senha.');
+
+        const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+        const user = usuarios.find(u => u.email === email && u.senha === senha);
+
+        if (!user) return mostrarErro('E-mail ou senha incorretos.');
+
+        localStorage.setItem('tipoUsuario', user.tipo);   // "cliente" ou "gerente"
+        localStorage.setItem('nomeUsuario', user.nome);
+        localStorage.setItem('usuarioLogado', JSON.stringify({ nome: user.nome, email: user.email, tipo: user.tipo }));
+
+        window.location.href = user.tipo === 'gerente' ? 'admin.html' : 'pedidos.html';
+      });
+    })();
+  });
+
+  // ---------- Sair ----------
+  $('#btn-sair').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('tipoUsuario');
+    definirAcesso(false);
+    window.scrollTo({ top: 0 });
+  });
+
+  atualizar();
+})();

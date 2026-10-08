@@ -37,25 +37,8 @@ body {
 
 /* ---------- Logo da marca ---------- */
 
-.logo-marca {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
-}
-
-.logo-rodape {
-  height: 48px;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 600;
-  color: var(--chocolate);
-}
+.navbar-cafe .logo-marca { height: 64px; width: auto; }
+footer .logo-marca.logo-rodape { height: 80px; width: auto; }
 
 span,
 p {
@@ -1042,4 +1025,113 @@ footer .copyright i {
     }
 
   }
+  /* =====================================================
+   ajustes.css — correções do Momento Café
+   Carregue DEPOIS de style.css e contato.css
+   ===================================================== */
+
+/* ---------- ÍCONES (Bootstrap Icons) ---------- */
+
+.bi {
+  display: inline-block;
+  font-style: normal;
+  line-height: 1;
+  vertical-align: -0.125em;
+}
+
+/* ---------- BANNERS / CARROSSEL DO INDEX ---------- */
+
+.hero-cafe .carousel-item {
+  min-height: 100vh;
+  background-color: #3e2a1e;          /* cor de reserva caso a imagem não carregue */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* película escura para o texto ficar legível sobre a foto */
+.hero-cafe .carousel-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(36, 22, 14, .82) 0%, rgba(36, 22, 14, .45) 60%, rgba(36, 22, 14, .2) 100%);
+  z-index: 1;
+}
+
+.hero-cafe .carousel-item > .container {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 90px;                  /* espaço da navbar fixa */
+  padding-bottom: 70px;               /* espaço dos indicadores */
+}
+
+.hero-cafe .hero-content {
+  max-width: 620px;
+  color: #fff;
+}
+
+.hero-cafe .carousel-indicators { z-index: 3; }
+.hero-cafe .carousel-control-prev,
+.hero-cafe .carousel-control-next { z-index: 3; }
+
+@media (max-width: 767.98px) {
+  .hero-cafe .carousel-item,
+  .hero-cafe .carousel-item > .container { min-height: 85vh; }
+}
+
+/* ---------- ÍCONES DA PÁGINA DE CONTATO ---------- */
+
+.pagina-contato .info-lista { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
+
+.pagina-contato .info-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pagina-contato .info-icon {
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #6f4e37;
+  color: #fff;
+  font-size: 1.35rem;
+}
+
+.pagina-contato .info-card h3 { font-size: 1rem; margin: 0 0 .15rem; }
+.pagina-contato .info-card p  { margin: 0; }
+
+/* ícone dentro dos campos do formulário */
+.pagina-contato .campo-cafe { position: relative; }
+
+.pagina-contato .campo-cafe > i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a9805b;
+  font-size: 1.05rem;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.pagina-contato .campo-cafe .form-control,
+.pagina-contato .campo-cafe .form-select { padding-left: 2.75rem; }
+
+.pagina-contato .campo-textarea > i { top: 20px; transform: none; }
+
+/* título da caixa de horários e status da loja */
+.pagina-contato .horarios-topo h3 i { margin-right: .4rem; }
+.pagina-contato .status-loja i { font-size: .6rem; margin-right: .3rem; }
+
+/* ícone do aviso de sucesso */
+.pagina-contato .contato-sucesso > i { font-size: 4rem; color: #3f8f5a; }
 }

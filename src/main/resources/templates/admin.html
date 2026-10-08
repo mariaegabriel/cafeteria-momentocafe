@@ -22,48 +22,54 @@
   <!-- CSS -->
   <link rel="stylesheet" href="../static/css/style.css">
   <link rel="stylesheet" href="../static/css/admin.css">
+  <!-- Estado de acesso (evita "piscar" a tela) -->
+  <script>
+    document.documentElement.classList.add(
+      localStorage.getItem("tipoUsuario") === "gerente" ? "is-gerente" : "is-visitante"
+    );
+  </script>
 </head>
 
 <body class="admin-page">
-  <script>
-    const tipoUsuario = localStorage.getItem("tipoUsuario");
-
-    if (tipoUsuario !== "gerente") {
-      window.location.href = "login.html";
-    }
-  </script>
   <!-- ================= NAVBAR ================= -->
 
   <nav class="navbar navbar-expand-lg fixed-top navbar-cafe">
-    <div class="container-fluid px-4">
+    <div class="container">
 
       <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html">
         <img src="../static/img/logo_transparente.png" alt="Logo Momento Café" class="logo-marca">
         Momento Café
       </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+        aria-controls="menu" aria-expanded="false" aria-label="Abrir menu">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav ms-auto align-items-lg-center">
 
-          <li class="nav-item">
-            <a class="nav-link" href="../index.html">Ver site</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="../index.html">Início</a></li>
+          <li class="nav-item"><a class="nav-link" href="produtos.html">Produtos</a></li>
+          <li class="nav-item"><a class="nav-link" href="pedidos.html">Pedidos</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="admin.html">Administrativo</a></li>
 
-          <li class="nav-item">
+          <!-- Funcionário logado -->
+          <li class="nav-item somente-gerente">
             <span class="nav-link usuario-admin">
-              <i class="bi bi-person-badge-fill"></i>
-              Gerente
+              <i class="bi bi-person-badge-fill"></i> Gerente
             </span>
           </li>
+          <li class="nav-item somente-gerente">
+            <a class="nav-link" href="login.html" id="btn-sair">
+              <i class="bi bi-box-arrow-right"></i> Sair
+            </a>
+          </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="login.html">
-              <i class="bi bi-box-arrow-right"></i>
-              Sair
+          <!-- Visitante -->
+          <li class="nav-item somente-visitante">
+            <a class="nav-link" href="#loginFuncionario">
+              <i class="bi bi-person-badge-fill"></i> Login do funcionário
             </a>
           </li>
 
@@ -78,44 +84,58 @@
 
   <div class="admin-wrapper">
 
-    <!-- Controles das abas (somente CSS) -->
-    <input type="radio" name="aba-admin" id="aba-atendimento" class="aba-input" checked>
-    <input type="radio" name="aba-admin" id="aba-finalizados" class="aba-input">
-
-
-    <!-- ================= MENU LATERAL ================= -->
-
-    <aside class="admin-sidebar">
-
-      <span class="sidebar-titulo">Pedidos</span>
-
-      <nav class="admin-menu">
-
-        <label for="aba-atendimento" class="menu-item menu-atendimento">
-          <i class="bi bi-hourglass-split"></i>
-          Em atendimento
-          <span class="menu-contador">4</span>
-        </label>
-
-        <label for="aba-finalizados" class="menu-item menu-finalizados">
-          <i class="bi bi-check2-circle"></i>
-          Finalizados
-          <span class="menu-contador">5</span>
-        </label>
-
-      </nav>
-
-      <div class="sidebar-rodape">
-        <i class="bi bi-shield-lock-fill"></i>
-        Área restrita aos gerentes
-      </div>
-
-    </aside>
-
-
     <!-- ================= CONTEÚDO ================= -->
 
     <main class="admin-conteudo">
+
+      <!-- LOGIN DO FUNCIONÁRIO -->
+
+      <section class="func-login somente-visitante" id="loginFuncionario">
+        <div class="func-login-card">
+          <div class="func-login-icon"><i class="bi bi-person-badge-fill"></i></div>
+          <span class="section-title">Área restrita</span>
+          <h2>Login do <span>funcionário</span></h2>
+          <p>Entre com sua conta de gerente para acessar a gestão de pedidos.</p>
+
+          <form id="formLoginFuncionario" novalidate>
+            <div class="mb-3">
+              <label for="funcEmail" class="form-label">E-mail</label>
+              <input type="email" id="funcEmail" class="form-control" placeholder="seuemail@exemplo.com"
+                autocomplete="username">
+            </div>
+            <div class="mb-3">
+              <label for="funcSenha" class="form-label">Senha</label>
+              <input type="password" id="funcSenha" class="form-control" placeholder="Sua senha"
+                autocomplete="current-password">
+            </div>
+            <p class="func-erro" id="funcErro" role="alert"></p>
+            <button type="submit" class="btn btn-cafe btn-lg w-100 justify-content-center">
+              Entrar <i class="bi bi-arrow-right"></i>
+            </button>
+            <p class="text-center mt-3 mb-0">
+              Ainda não tem conta de gerente? <a href="cadastro.html" class="link-cafe">Cadastre-se</a>
+            </p>
+          </form>
+        </div>
+      </section>
+
+
+      <!-- GESTÃO (somente gerente) -->
+
+      <div class="somente-gerente" id="painelGestao">
+
+      <!-- BOTÕES: ATENDIMENTO / FINALIZADOS -->
+
+      <div class="admin-abas" role="tablist" aria-label="Gestão de pedidos">
+        <button type="button" class="aba-btn ativo" role="tab" aria-selected="true" data-alvo="painel-atendimento">
+          <i class="bi bi-hourglass-split"></i> Em atendimento
+          <span class="menu-contador" id="contador-atendimento">4</span>
+        </button>
+        <button type="button" class="aba-btn" role="tab" aria-selected="false" data-alvo="painel-finalizados">
+          <i class="bi bi-check2-circle"></i> Finalizados
+          <span class="menu-contador" id="contador-finalizados">5</span>
+        </button>
+      </div>
 
       <!-- RESUMO -->
 
@@ -126,7 +146,7 @@
             <div class="resumo-icon"><i class="bi bi-receipt"></i></div>
             <div>
               <span>Pedidos hoje</span>
-              <h3>9</h3>
+              <h3 id="resumo-total">9</h3>
             </div>
           </div>
         </div>
@@ -136,7 +156,7 @@
             <div class="resumo-icon"><i class="bi bi-hourglass-split"></i></div>
             <div>
               <span>Em atendimento</span>
-              <h3>4</h3>
+              <h3 id="resumo-atendimento">4</h3>
             </div>
           </div>
         </div>
@@ -146,7 +166,7 @@
             <div class="resumo-icon"><i class="bi bi-check2-circle"></i></div>
             <div>
               <span>Finalizados</span>
-              <h3>5</h3>
+              <h3 id="resumo-finalizados">5</h3>
             </div>
           </div>
         </div>
@@ -156,7 +176,7 @@
             <div class="resumo-icon"><i class="bi bi-cash-coin"></i></div>
             <div>
               <span>Faturamento</span>
-              <h3>R$ 287,50</h3>
+              <h3 id="resumo-faturamento">R$ 224,50</h3>
             </div>
           </div>
         </div>
@@ -166,7 +186,7 @@
 
       <!-- ================= ABA: EM ATENDIMENTO ================= -->
 
-      <section class="painel painel-atendimento">
+      <section class="painel painel-atendimento ativo" id="painel-atendimento" role="tabpanel">
 
         <div class="painel-header">
           <div>
@@ -176,12 +196,12 @@
 
           <div class="input-busca">
             <i class="bi bi-search"></i>
-            <input type="text" class="form-control" placeholder="Buscar pedido ou cliente">
+            <input type="text" id="busca-atendimento" class="form-control" placeholder="Buscar pedido ou cliente" aria-label="Buscar pedido em atendimento">
           </div>
         </div>
 
 
-        <div class="row g-4">
+        <div class="row g-4" id="lista-atendimento">
 
           <!-- PEDIDO 1 -->
 
@@ -367,7 +387,7 @@
 
       <!-- ================= ABA: FINALIZADOS ================= -->
 
-      <section class="painel painel-finalizados">
+      <section class="painel painel-finalizados" id="painel-finalizados" role="tabpanel">
 
         <div class="painel-header">
           <div>
@@ -377,7 +397,7 @@
 
           <div class="input-busca">
             <i class="bi bi-search"></i>
-            <input type="text" class="form-control" placeholder="Buscar pedido ou cliente">
+            <input type="text" id="busca-finalizados" class="form-control" placeholder="Buscar pedido ou cliente" aria-label="Buscar pedido finalizado">
           </div>
         </div>
 
@@ -390,17 +410,17 @@
 
               <thead>
                 <tr>
-                  <th>Pedido</th>
-                  <th>Cliente</th>
-                  <th>Itens</th>
-                  <th>Local</th>
-                  <th>Horário</th>
-                  <th>Total</th>
-                  <th>Status</th>
+                  <th scope="col">Pedido</th>
+                  <th scope="col">Cliente</th>
+                  <th scope="col">Itens</th>
+                  <th scope="col">Local</th>
+                  <th scope="col">Horário</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Status</th>
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody id="tabela-finalizados">
                 <tr>
                   <td><strong>#1020</strong></td>
                   <td>Mariana Costa</td>
@@ -456,10 +476,40 @@
 
       </section>
 
+      </div><!-- /painelGestao -->
+
     </main>
 
   </div>
 
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h3 class="d-flex align-items-center gap-2">
+            <img src="../static/img/logo_transparente.png" alt="Logo Momento Café" class="logo-marca logo-rodape">
+            Momento Café
+          </h3>
+          <p>Café artesanal que proporciona momentos especiais.</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <div class="social">
+            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <p class="copyright">© 2026 Momento Café — Feito com <i>amor</i> e muito café.</p>
+    </div>
+  </footer>
+
+
+  <!-- Avisos -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-area"></div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

@@ -8,7 +8,14 @@
     overflow: hidden;
     margin-top: -2px;
 }
-
+.ambiente{
+    position: relative;
+    height: 80vh;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
 .hero-img {
     position: absolute;
     top: 0;
