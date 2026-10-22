@@ -1,5 +1,4 @@
 /* ==================== PÁGINA DE PRODUTOS ==================== */
-
 .pagina-produtos {
     background-color: #fafafa;
 }
@@ -591,17 +590,17 @@ body.carrinho-aberto .carrinho-painel {
     color: var(--cafe-principal);
 }
 
-.atendimento-opcao input:checked + span {
+.atendimento-opcao input:checked+span {
     background: var(--gradient-cafe);
     border-color: transparent;
     color: white;
 }
 
-.atendimento-opcao input:checked + span i {
+.atendimento-opcao input:checked+span i {
     color: white;
 }
 
-.atendimento-opcao input:focus-visible + span {
+.atendimento-opcao input:focus-visible+span {
     outline: 2px solid var(--cafe-light);
     outline-offset: 2px;
 }
@@ -613,7 +612,7 @@ body.carrinho-aberto .carrinho-painel {
     padding: 2rem 0.5rem;
 }
 
-.carrinho-sucesso > i {
+.carrinho-sucesso>i {
     display: block;
     font-size: 3rem;
     color: var(--success, #4a8f5b);
@@ -642,5 +641,71 @@ body.carrinho-aberto .carrinho-painel {
     .atendimento-card span {
         flex-basis: 100%;
         text-align: center;
+    }
+
+    /* produtos-extra.css — estados do painel "Meu pedido" e filtros (carregar depois de produtos.css) */
+
+    .carrinho-overlay.is-aberto {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .carrinho-painel.is-aberto {
+        display: flex !important;
+        transform: none !important;
+        right: 0 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .item-pedido {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: .75rem 0;
+        border-bottom: 1px solid #eadfd2;
+        list-style: none;
+    }
+
+    .item-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .item-info span {
+        color: #8a6f5a;
+        font-size: .9rem;
+    }
+
+    .item-qtd {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+    }
+
+    .item-qtd button {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid #5a3a26;
+        background: #fff;
+        color: #5a3a26;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .item-qtd button:hover {
+        background: #5a3a26;
+        color: #fff;
+    }
+
+    .select-btn.adicionado {
+        background: #3f7d4e !important;
+        border-color: #3f7d4e !important;
+        color: #fff !important;
     }
 }
